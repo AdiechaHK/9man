@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    title Welcome to my game !
+    link(rel="stylesheet", type="text/css", href="/libs/bootstrap/dist/css/bootstrap.min.css")
+    link(rel="stylesheet", type="text/css", href="/assets/css/app.css")
+  body
+    br
+    div#nineManApp.container
+      h3= "GameID:" + gameId
+        span.float-right Hello
+      span Hello {{greet}}
+      hr(data=board, ref="boardHolder")
+      table.game-table(cellspacing=0)
+        tr(v-for="c in Array.from(Array(9).keys())")
+          td(v-for="r in Array.from(Array(9).keys())")
+            svg(height="100", width="100")
+              polyline(:points="computePoints(c, r)")
+              circle(cx=50, cy="50", :r="getSpotRadius(c, r)", :fill="getSpotColor(c,r)", :class="{'spot': hasSpot(c,r)}")
+
+
+    script(type="text/javascript", src="/libs/jquery/dist/jquery.min.js")
+    script(type="text/javascript", src="/libs/bootstrap/dist/js/bootstrap.min.js")
+    script(type="text/javascript", src="/libs/vue/dist/vue.min.js")
+    script(type="text/javascript", src="/assets/js/game.js")

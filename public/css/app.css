@@ -1,0 +1,19 @@
+table.game-table {
+  /*align-content: center;*/
+}
+
+table.game-table tr td svg circle,
+table.game-table tr td svg polyline {
+  stroke:rgb(0,0,0);
+  stroke-width:5
+}
+
+table.game-table tr td:hover svg circle.spot {
+  r: 20;
+  transition: all .4s ease
+}
+
+
+table.game-table { border-collapse: collapse; }
+table.game-table tr, table.game-table td { padding: 0; }
+
