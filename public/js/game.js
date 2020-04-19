@@ -15,6 +15,10 @@ const vueConf = {
 		current_turn: ''
 	},
 	mounted() {
+		( localStorage.getItem('dices') ? this.dices = JSON.parse(localStorage.getItem('dices')) : '');
+		( localStorage.getItem('p1_dice') ? this.p1_dice = JSON.parse(localStorage.getItem('p1_dice')) : '');
+		( localStorage.getItem('p2_dice') ? this.p2_dice = JSON.parse(localStorage.getItem('p2_dice')) : '');
+		( localStorage.getItem('current_turn') ? this.current_turn = JSON.parse(localStorage.getItem('current_turn')) : '');
 		let data = JSON.parse($(this.$refs.boardHolder).attr('data'));
 		this.board = data.hasOwnProperty('board') ? data.board: [];
 		this.color = data.hasOwnProperty('color') ? data.color: "blue";
@@ -76,10 +80,17 @@ const vueConf = {
 		placeADice(e, c, r) {
 			this.current_turn == 'p1' ? this.current_turn = 'p2' : this.current_turn = 'p1';
 			this.dices.push({ id: e.target.id, player: this.current_turn });
+			// Set localstorageItems
+			localStorage.setItem('dices', JSON.stringify(this.dices));
+			localStorage.setItem('current_turn', JSON.stringify(this.current_turn));
 			const curr_dice = 'dice_'+this.current_turn+'_'+( ( this.current_turn == 'p1' ? this.p1_dice : this.p2_dice ) - 1);
 			document.getElementById(curr_dice).classList.add('disappear');
 			setTimeout(()=> {
 				this.current_turn == 'p1' ? this.p1_dice-- : this.p2_dice--;
+				if( this.current_turn == 'p1' )
+					localStorage.setItem('p1_dice', JSON.stringify(this.p1_dice));
+				else
+					localStorage.setItem('p2_dice', JSON.stringify(this.p2_dice));
 			}, 250);
 			console.log(this.dices);
 		},
