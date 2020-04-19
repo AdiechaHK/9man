@@ -7,7 +7,12 @@ const vueConf = {
 		color: "blue",
 		opColor: "green",
 		status: "waiting",
-		moves: []
+		moves: [],
+		dices: [],
+		indexes: 0,
+		p1_dice: 9,
+		p2_dice: 9,
+		current_turn: ''
 	},
 	mounted() {
 		let data = JSON.parse($(this.$refs.boardHolder).attr('data'));
@@ -22,23 +27,23 @@ const vueConf = {
 				if(this.manLeft > 0) {
 					this.occupySpot(x, y);
 				}
-				console.log("Yes, it's spot")
+				// console.log("Yes, it's spot")
 				return;
 			}
-			console.error("Oops it's not a spot !");
+			// console.error("Oops it's not a spot !");
 		},
 		occupySpot(x, y) {
 			let cur = this.getBoardCell(x, y);
 			cur += " " + this.color;
-			console.log(cur);
+			// console.log(cur);
 			this.setBoardCell(x, y, cur);
 		},
 		computePoints(x, y){
 			let lineCoordinates = {
-				right: "50,50 100,50 50,50",
-				left: "50,50 0,50 50,50",
-				up: "50,50 50,0 50,50",
-				down: "50,50 50,100 50,50"
+				right: "40,40 80,40 40,40",
+				left: "40,40 0,40 40,40",
+				up: "40,40 40,0 40,40",
+				down: "40,40 40,80 40,40"
 			}
 			let cell = this.getBoardCell(x, y);
 			let points = cell.split(" ")
@@ -56,9 +61,9 @@ const vueConf = {
 			return this.hasSpot(x, y)? 10: 0;
 		},
 		getSpotColor(x, y) {
-			let cell = this.getBoardCell(x, y);
-			let colors = [this.color, this.opColor].filter(c => cell.indexOf(c) != -1);
-			if (colors.length > 0) return colors[0];
+			// let cell = this.getBoardCell(x, y);
+			// let colors = [this.color, this.opColor].filter(c => cell.indexOf(c) != -1);
+			// if (colors.length > 0) return colors[0];
 			return "white";
 		},
 		getBoardCell(x, y) {
@@ -67,6 +72,24 @@ const vueConf = {
 		},
 		setBoardCell(x, y, val) {
 			this.board[x][y] = val;
+		},
+		placeADice(e, c, r) {
+			this.current_turn == 'p1' ? this.current_turn = 'p2' : this.current_turn = 'p1';
+			this.dices.push({ id: e.target.id, player: this.current_turn });
+			const curr_dice = 'dice_'+this.current_turn+'_'+( ( this.current_turn == 'p1' ? this.p1_dice : this.p2_dice ) - 1);
+			document.getElementById(curr_dice).classList.add('disappear');
+			setTimeout(()=> {
+				this.current_turn == 'p1' ? this.p1_dice-- : this.p2_dice--;
+			}, 250);
+			console.log(this.dices);
+		},
+		removeDice(e, c, r) {
+			this.dices = this.dices.filter(dice => dice.id != 'index'+c+r );
+		}
+	},
+	computed: {
+		current_cls() {
+			return this.current_turn;
 		}
 	}
 };

@@ -9,16 +9,35 @@ html
     div#nineManApp.container
       h3= "GameID:" + gameId
         span.float-right Hello
-      span Hello {{greet}}
+      //- span Hello {{greet}}
       hr(data=board, ref="boardHolder")
-      table.game-table(cellspacing=0)
-        tr(v-for="c in Array.from(Array(9).keys())")
-          td(v-for="r in Array.from(Array(9).keys())", @click="markSpot(c, r)")
-            svg(height="100", width="100")
-              polyline(:points="computePoints(c, r)")
-              circle(cx=50, cy="50", :r="getSpotRadius(c, r)", :fill="getSpotColor(c, r)", :class="{'spot': hasSpot(c,r)}")
-
-      pre {{$data}}
+      br
+      .dflex
+        h3.fl
+          | Player 1
+        ul(class="dice-list p1")
+          li(v-for="(dice, key) in p1_dice", :key="key", :id="'dice_p1_'+key")
+      .row
+        .col
+          table.game-table(cellspacing=0)
+            tr(v-for="(c, key) in Array.from(Array(7).keys())")
+              td(v-for="(r, k2) in Array.from(Array(7).keys())", @click="markSpot(c, r)")
+                svg(height="80", width="80")
+                  polyline(:points="computePoints(c, r)")
+                  //- span(v-if="hasSpot(c, r)" v-html="'key_'+c+r")
+                  circle(cx=40, cy="40", :id="'index'+c+r", @click="placeADice($event, c, r)" :r="getSpotRadius(c, r)", :fill="getSpotColor(c, r)", :class="[{'spot': hasSpot(c,r)}]")
+                  span(v-if="hasSpot(c,r)", :class="[{ dice : dices.filter( dice => dice.id == 'index'+c+r ).length }, dices.filter( dice => dice.id == 'index'+c+r )[0] ? dices.filter( dice => dice.id == 'index'+c+r )[0].player : '' ]", @click="removeDice($event, c, r)")
+                  //- span(v-if="dices.filter( dice => dice.id == 'index'+c+r )[0]" v-html="dices.filter( dice => dice.id == 'index'+c+r )[0].player")
+                  //- dices.filter( dice => dice.id == 'index'+c+r ).length ? current_cls : ''
+        .col.dflex
+          label(v-html="( current_turn == '' ? 'Player 1' : ( current_turn == 'p1' ? 'Player 2' : 'Player 1' ) + ' turn' )", class="lbl-turn")
+      br
+      .dflex
+        h3.fl
+          | Player 2
+        ul(class="dice-list p2")
+          li(v-for="(dice, key) in p2_dice", :key="key", :id="'dice_p2_'+key")
+      //- pre {{$data}}
     script(type="text/javascript", src="/libs/jquery/dist/jquery.min.js")
     script(type="text/javascript", src="/libs/bootstrap/dist/js/bootstrap.min.js")
     script(type="text/javascript", src="/libs/vue/dist/vue.min.js")

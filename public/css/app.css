@@ -1,19 +1,79 @@
+@import url('https://fonts.googleapis.com/css?family=Baloo+Bhaina+2:400,500,600,700,800|Baloo+Paaji+2:400,500,600,700,800&display=swap');
+:root {
+  --d1-clr: blue;
+  --d2-clr: green;
+}
+body {
+  font-family: "Baloo Bhaina 2";
+}
+.dflex {
+  display: flex;
+  align-items: center;
+}
+.fl {
+  float: left;
+  margin-right: 30px;
+}
+.lbl-turn {
+  border: 5px double #6c6c6c;
+  border-radius: 3px;
+  padding: 5px 20px;
+  padding-top: 10px;
+  font-weight: 500;
+  font-size: 1.7rem;
+}
 table.game-table {
   /*align-content: center;*/
 }
-
 table.game-table tr td svg circle,
 table.game-table tr td svg polyline {
   stroke:rgb(0,0,0);
   stroke-width:5
 }
-
-table.game-table tr td:hover svg circle.spot {
-  r: 20;
-  transition: all .4s ease
+table.game-table tr td svg circle {
+  cursor: pointer;
 }
-
-
+table.game-table tr td:hover svg circle.spot {
+  /* r: 20; */
+  transition: all .4s ease;
+}
 table.game-table { border-collapse: collapse; }
-table.game-table tr, table.game-table td { padding: 0; }
-
+table.game-table tr, table.game-table td { position: relative; padding: 0; }
+.dice {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+.dice.p1 {
+  background:var(--d1-clr);
+}
+.dice.p2 {
+  background:var(--d2-clr);
+}
+.dice-list {
+  list-style: none;
+  padding: 0;
+}
+.dice-list li {
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  margin-right: 10px;
+  display: inline-block;
+  transition: all .25s;
+}
+.dice-list li.disappear {
+  transform: translateY(-20px);
+  opacity: 0;
+}
+.dice-list.p1 li {
+  background:var(--d1-clr);
+}
+.dice-list.p2 li {
+  background:var(--d2-clr);
+}
